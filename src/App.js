@@ -1,14 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 
 function App() {
+
+
+  //1 write a handleClick function that fetches names from API.
+  // iterate through the names 
+  // display names
+
+  const [pokemon, setPokemon] = useState([]);
+
+  const handleClick = () => {
+    fetch('https://pokeapi.co/api/v2/pokemon/?limit=807')
+      // convert response to json object
+      .then(response => response.json())
+      // set object in state
+      .then(response => setPokemon(response.results))
+  }
+
   return (
     <div className="App">
       <h3>Click the button to diplay the names of all 807 Pokemon using the <a target='black' href='https://pokeapi.co/'>Pokemon API</a>!</h3>
-      <button>Fetch Pokemon</button>
+      <button onClick={handleClick}>Fetch Pokemon</button>
 
       <div id="box">
-
+        <ul>
+          {pokemon.length > 0 && pokemon.map((pokemon, index) => {
+            // arrow function to traverse thru the pokemon json objects returned in line 
+            return (<li key={index}>{pokemon.name}</li>)
+          })}
+        </ul>
       </div>
     </div>
   );
